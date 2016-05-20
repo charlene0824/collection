@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>闭包的for循环中i值的获取问题</title>
+</head>
+<body>
+	 <ul>
+	 	<li>列表1</li>
+	 	<li>列表2</li>
+	 	<li>列表3</li>
+	 	<li>列表4</li>
+	 	<li>列表5</li>
+	 </ul>
+
+	 <script type="text/javascript">
+	 	var lis = document.getElementsByTagName("li");
+	 	//方法1：加一层闭包 将i值以参数形式传递给内层函数
+	 	function method1(){
+	 	for (var i = 0; i < lis.length; i++) {
+	 		(function(arg){
+	 		
+	 			lis[i].onclick = function(){
+
+	 			console.log(arg);
+	 			};
+	 		})(i)
+	 		
+	 	}
+	 }
+
+	 	/*方法二：将i值作为对象的属性值*/
+	 	functon method2(){
+	 		for (var i = 0; i < lis.length; i++) {
+		 		lis[i].i = i;
+		 		lis[i].onclick = function(){
+		 			console.log(this.i);
+		 		}
+		 	}
+	 	}
+	 	
+
+	 	/*方法三：加一层闭包，i以局部变量形式传递给内层函数*/
+	 	function method3(){
+			for (var i = 0; i < lis.length; i++) {
+			 	(function(){
+			 		var temp = i;
+			 		lis[i].onclick = function(){
+			 				alert(temp);
+			 		}
+			 	})()
+			 		
+			}
+	 	}
+	 	
+
+	 	/*方法4：用function实现 实际上，没产生一个函数实例就会产生一个闭包*/
+	 	function method4(){
+	 		for (var i = 0; i < lis.length; i++) {
+		 		lis[i].onclick = new Function("console.log("+i+");")
+		 	}
+	 	}
+	 	
+	 </script>
+</body>
+</html>
